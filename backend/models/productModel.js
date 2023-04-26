@@ -8,7 +8,41 @@ const productShema = MongoDB.Schema({
     price: {
         type: Number,
         required: [true, "Please enter your product price"],
-    }
+    },
+    quantity: {
+        type: Number,
+    },
+    description: {
+        type: String,
+    },
+    imageURL: {
+        type: String,
+    },
+    category: {
+        type: String,
+    },
+    brand: {
+        type: String,
+    },
+    rating: {
+        type: Number,
+    },
+    numReviews: {
+        type: Number,
+    },
+    reviews: [
+        {
+            type: MongoDB.Schema.Types.ObjectId,
+            ref: "Review"
+        }
+    ],
+    likedBy: [
+        {
+            type: MongoDB.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ]
+
 })
 
 module.exports = MongoDB.model("Product", productShema)
