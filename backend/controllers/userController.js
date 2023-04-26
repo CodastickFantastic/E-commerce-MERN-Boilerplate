@@ -81,18 +81,39 @@ const loginUser = async (req, res) => {
 }
 
 // @desc    Add Product to Favourite
-// @route   Get /api/user/:id/add-favourite
+// @route   Get /api/user/add-favourite/:id
 // @access  Private
 const addToFavourites = async (req, res) => {
-    const Product = await req.params.id;
+    const productId = req.params.id;
     const User = req.user;
 
-    User.favouriteProducts
+    // Check if product is already in favourites
+    if(User.favouriteProducts.includes(productId)) return res.status(400).json({error: "Product is already in favourites"})
 
-    console.log(Product)
-    console.log(User)
+    User.favouriteProducts.push(productId)
+    await User.save()
 
+    res.status(200).json({msg: "Product added to favourites", user: User})
+}
+
+// @desc    Remove Product From Favourite
+// @route   Get /api/user/remove-favourite/:id
+// @access  Private
+const removeFromoFavourites = async (req, res) => {
+    const productId = req.params.id;
+    const User = req.user;
+
+    // Check if product is in favourites
+    if(User.favouriteProducts.includes(productId)){
+        const newFavorites = User.favouriteProducts.filter((product) => product.toHexString() !== productId)
+        console.log(newFavorites)
+        User.favouriteProducts = newFavorites
+        await User.save()
+        res.status(200).json({msg: "Product added to favourites", user: User})
+    } else {
+        res.status(400).json({error: "Product is not in favourites"})
+    }   
 }
 
 
-module.exports = {createUser, loginUser, addToFavourites}
+module.exports = {createUser, loginUser, addToFavourites, removeFromoFavourites}
