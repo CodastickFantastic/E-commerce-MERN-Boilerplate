@@ -1,6 +1,13 @@
 const MongoDB = require('mongoose');
 
 const productShema = MongoDB.Schema({
+    owner:[
+        {
+            type: MongoDB.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        }
+    ],
     name: {
         type: String,
         required: [true, "Please enter your product name"],
@@ -8,6 +15,11 @@ const productShema = MongoDB.Schema({
     price: {
         type: Number,
         required: [true, "Please enter your product price"],
+    },
+    currency: {
+        type: String,
+        default: "PLN",
+        required: [true, "Please enter your product currency"],
     },
     quantity: {
         type: Number,
@@ -43,6 +55,8 @@ const productShema = MongoDB.Schema({
         }
     ]
 
+}, {
+    timestamps: true,
 })
 
 module.exports = MongoDB.model("Product", productShema)

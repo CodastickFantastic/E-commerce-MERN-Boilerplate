@@ -13,12 +13,9 @@ const app = express();
 //Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use((req, res, next)=>{
-    console.log("Middleware")
-    next();
-})
 
 app.use("/api/user", require("./routes/userRoutes"));
+app.use("/api/product", require("./routes/productRoutes"));
 
 
 // Error Handler Middleware

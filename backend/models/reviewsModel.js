@@ -22,6 +22,8 @@ const reviewShema = MongoDB.Schema({
     },
     
     
+}, {
+    timestamps: true,
 })
 
 module.exports = MongoDB.model("Review", reviewShema)

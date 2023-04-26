@@ -1,8 +1,5 @@
-const { isAsyncFunction } = require('util/types');
-const productModel = require('./productModel')
-
+const ProductModel = require('./productModel')
 const MongoDB = require('mongoose');
-const { options } = require('../routes/userRoutes');
 
 const userShema = MongoDB.Schema({
     name: {
@@ -28,17 +25,18 @@ const userShema = MongoDB.Schema({
             ref: "Product"
         }
     ],
+
 },{
+    timesptamps: true,
     methods: {
         showAllFavouriteProducts: async function(){
             this.favouriteProducts.forEach(async product => {
                 let productId = product._id.toHexString();
-                let prod = await productModel.findById(productId)
+                let prod = await ProductModel.findById(productId)
                 console.log(prod)
             })
         }
-    }
-
+    },
 })
 
 
