@@ -1,6 +1,7 @@
 const JWT = require('jsonwebtoken');
 const BCRYPT = require('bcryptjs');
 const UserModel = require('../models/userModel');
+const { response } = require('express');
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -10,7 +11,7 @@ const generateToken = (id) => {
   };
 
 // @desc    Register new user
-// @route   POST /api/users/register
+// @route   POST /api/user/register
 // @access  Public
 const createUser = async (req, res) => {
     let {name, email, password, userType} = req.body;
@@ -50,7 +51,7 @@ const createUser = async (req, res) => {
 }
 
 // @desc    Login User
-// @route   POST /api/users/login
+// @route   POST /api/user/login
 // @access  Public
 const loginUser = async (req, res) => {
     let {email, password} = req.body;
@@ -72,15 +73,26 @@ const loginUser = async (req, res) => {
                 token: generateToken(User._id)
             });
         } else {
-            res.status(400).json({error: "Wrong password"})
+            res.status(400).json({error: "Password is wrong"})
         }
+    } else {
+        res.status(400).json({error: "There is no such user"})
     }
 }
 
-// @desc    Show All Users
-// @route   POST /api/users/login
-// @access  Public
+// @desc    Add Product to Favourite
+// @route   Get /api/user/:id/add-favourite
+// @access  Private
+const addToFavourites = async (req, res) => {
+    const Product = await req.params.id;
+    const User = req.user;
+
+    User.favouriteProducts
+
+    console.log(Product)
+    console.log(User)
+
+}
 
 
-
-module.exports = {createUser, loginUser}
+module.exports = {createUser, loginUser, addToFavourites}
